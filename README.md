@@ -1,6 +1,6 @@
 # SharpF5
 
-A .NET Ethernet Communication Library for KEB F5 Combiverts. Library allows read and write registers of the F5 Combivert with help of the DIN66019-II protocol.
+A .NET Ethernet Communication Library for [KEB F5 Combiverts](https://www.keb.de/en/products/frequency-inverters/combivert-f5.html). Library allows read and write registers of the F5 Combivert with help of the DIN66019-II protocol.
 
 - Tcp and BootP protocols.
 - Read/write parameters.
