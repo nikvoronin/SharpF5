@@ -25,14 +25,14 @@ combivert.SelectInverter(0);
 
 ```c#
 int sy50_value = combivert.ReadValue("sy50");
-int op10_value = combivert.ReadValue("op10", Paramater.SET_1);
+int op10_value = combivert.ReadValue("op10", 1);
 combivert.WriteValue(1, "di01");
 ```
 
 Frequent use of the parameter with help of "Parameter" class and use of inner integer field "Value".
 
 ```c#
-Parameter op10 = new Parameter( "op10", Parameter.SET_2);
+Parameter op10 = new Parameter( "op10", 2);
 
 combivert.ReadValue(op10);
 op10.Value *= 2;

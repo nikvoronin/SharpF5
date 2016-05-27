@@ -18,14 +18,7 @@ namespace SharpF5
         protected Stream stream = null;
         protected byte iid = 0;
 
-        private byte[] setsMask =
-            { 
-                Parameter.SET_0,
-                Parameter.SET_1,
-                Parameter.SET_2,
-                Parameter.SET_3
-            };
-
+        private byte[] setsMask = {  0, 1, 3, 7 };
 
         protected byte IID
         {
@@ -63,7 +56,7 @@ namespace SharpF5
             }
         } // SelectInverter()
 
-        public int ReadValue(string parameterName, byte setNo = Parameter.SET_0)
+        public int ReadValue(string parameterName, byte setNo = 0)
         {
             return
                 ReadValue(
@@ -125,7 +118,7 @@ namespace SharpF5
             return value;
         } // WriteValue()
 
-        public void WriteValue(int value, string parameterName, byte setNo = Parameter.SET_0)
+        public void WriteValue(int value, string parameterName, byte setNo = 0)
         {
             WriteValue(
                 value,
@@ -191,7 +184,7 @@ namespace SharpF5
             } // if
         } // ReadValue()
 
-        public DisplayStandart GetDisplayStandart(string parameterName, byte setNo = Parameter.SET_0)
+        public DisplayStandart GetDisplayStandart(string parameterName, byte setNo = 0)
         {
             return
                 GetDisplayStandart(

@@ -6,12 +6,6 @@ namespace SharpF5.Common
 {
     public class Parameter
     {
-        public const byte SET_0     = 0;
-        public const byte SET_1     = 1;
-        public const byte SET_2     = 3;
-        public const byte SET_3     = 7;
-        public const byte SET_ALL   = 255;
-
         protected string name;
         protected byte set;
 
