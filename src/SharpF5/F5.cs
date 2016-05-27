@@ -2,6 +2,7 @@
 using System.IO;
 using SharpF5.Exceptions;
 using System.Globalization;
+using SharpF5.Common;
 
 namespace SharpF5
 {
@@ -17,7 +18,14 @@ namespace SharpF5
         protected Stream stream = null;
         protected byte iid = 0;
 
-        private byte[] setMask = {0, 1, 3, 7};
+        private byte[] setsMask =
+            { 
+                Parameter.SET_0,
+                Parameter.SET_1,
+                Parameter.SET_2,
+                Parameter.SET_3
+            };
+
 
         protected byte IID
         {
@@ -28,9 +36,9 @@ namespace SharpF5
             }
         }
         
-        public F5(Stream stream)
+        public F5(Stream networkStream)
         {
-            this.stream = stream;
+            stream = networkStream;
         }
 
         public void SelectInverter(int index)
@@ -39,8 +47,8 @@ namespace SharpF5
 
             char[] ascIID = IID.ToString("X1").ToCharArray();
             telegram[0] = EOT;
-            telegram[1] = (byte)'0';                    // Indirect ASCII hi-byte
-            telegram[2] = (byte)(index + (byte)'0');    // Indirect ASCII lo-byte
+            telegram[1] = (byte)'0';
+            telegram[2] = (byte)(index + (byte)'0');
 
             int bytes = 0;
             byte[] response = new byte[256];
@@ -55,17 +63,24 @@ namespace SharpF5
             }
         } // SelectInverter()
 
-        public int GetParameter(ParameterAddress address)
+        public int ReadValue(string parameterName, byte setNo = Parameter.SET_0)
+        {
+            return
+                ReadValue(
+                    new Parameter(parameterName, setNo));
+        }
+                    
+        public int ReadValue(Parameter parameter)
         {
             byte[] telegram = new byte[10];
 
             char[] ascIID = IID.ToString("X1").ToCharArray();
             telegram[0] = (byte)'G';
             telegram[1] = (byte)ascIID[0];
-            byte[] ascAddress = address.GetBytes();
+            byte[] ascAddress = parameter.GetAddressBytes();
             ascAddress.CopyTo(telegram, 2);
-            telegram[6] = (byte)'0';                            // Indirect ASCII hi-byte
-            telegram[7] = (byte)(setMask[address.SetNo] + '1');  // Indirect ASCII lo-byte
+            telegram[6] = (byte)'0';
+            telegram[7] = (byte)(setsMask[parameter.SetNo] + '1');
             telegram[8] = ENQ;
             telegram[9] = BCC(telegram, 0, 9);
 
@@ -87,7 +102,10 @@ namespace SharpF5
                 throw new EmptyResponseException();
 
             if (response[0] == STX)
+            {
                 value = AsciiValueToInt(response, 3, 8);
+                parameter.Value = value;
+            }
             else
             {
                 byte errorCode = 0;
@@ -105,9 +123,21 @@ namespace SharpF5
             } // else if
             
             return value;
-        } // GetParameter()
+        } // WriteValue()
 
-        public void SetParameter(ParameterAddress address, int value)
+        public void WriteValue(int value, string parameterName, byte setNo = Parameter.SET_0)
+        {
+            WriteValue(
+                value,
+                new Parameter(parameterName, setNo));
+        }
+
+        public void WriteValue(Parameter parameter)
+        {
+            WriteValue(parameter.Value, parameter);
+        }
+
+        public void WriteValue(int value, Parameter parameter)
         {
             byte[] telegram = new byte[19];
 
@@ -117,15 +147,15 @@ namespace SharpF5
             char[] ascIID = IID.ToString("X1").ToCharArray();
             telegram[2] = (byte)ascIID[0];
 
-            byte[] ascAddress = address.GetBytes();
+            byte[] ascAddress = parameter.GetAddressBytes();
             ascAddress.CopyTo(telegram, 3);
 
             char[] ascValue = value.ToString("X8").ToCharArray();
             for (int i = 0; i < ascValue.Length; i++)
                 telegram[i + 7] = (byte)ascValue[i];
 
-            telegram[15] = (byte)'0';                       // Indirect ASCII hi-byte
-            telegram[16] = (byte)(setMask[address.SetNo] + '1'); // Indirect ASCII lo-byte
+            telegram[15] = (byte)'0';
+            telegram[16] = (byte)(setsMask[parameter.SetNo] + '1');
             telegram[17] = ETX;
             telegram[18] = BCC(telegram, 1, 17);
 
@@ -159,16 +189,23 @@ namespace SharpF5
                     throw new InternalErrorException(errorCode);
                 }
             } // if
-        } // SetParameter()
+        } // ReadValue()
 
-        public DisplayStandart GetDisplayStandart(ParameterAddress address)
+        public DisplayStandart GetDisplayStandart(string parameterName, byte setNo = Parameter.SET_0)
+        {
+            return
+                GetDisplayStandart(
+                    new Parameter(parameterName, setNo));
+        }
+
+        public DisplayStandart GetDisplayStandart(Parameter parameter)
         {
             byte[] telegram = new byte[8];
 
             char[] ascIID = IID.ToString("X1").ToCharArray();
             telegram[0] = (byte)'L';
             telegram[1] = (byte)ascIID[0];
-            byte[] ascAddress = address.GetBytes();
+            byte[] ascAddress = parameter.GetAddressBytes();
             ascAddress.CopyTo(telegram, 2);
             telegram[6] = ENQ;
             telegram[7] = BCC(telegram, 0, 7);
@@ -282,7 +319,7 @@ namespace SharpF5
         /// <summary>
         /// Digital Outputs
         /// </summary>
-        public enum DigitalOut : ushort
+        public enum DO : ushort
         {
             O1 = 0x01,
             O2 = 0x02,

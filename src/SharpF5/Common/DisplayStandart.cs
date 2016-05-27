@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SharpF5
+namespace SharpF5.Common
 {
     /// <summary>
     /// Container for display standarts of a combivert parameter
@@ -17,11 +17,11 @@ namespace SharpF5
         /// <summary>
         /// Convert value to display represenation
         /// </summary>
-        /// <param name="parameterValue">Raw value of the parameter</param>
+        /// <param name="value">Raw value of the parameter</param>
         /// <returns>Display representation with units of the parameter value</returns>
-        public string ToDisplayValue(double parameterValue)
+        public string ToDisplayValue(double value)
         {
-            double dispVal = parameterValue;
+            double dispVal = value;
             switch ((Flags & 0xC0) >> 6)    // bit 6..7
             {
                 case 0:
@@ -68,11 +68,11 @@ namespace SharpF5
         /// <summary>
         /// Convert display representation of the value to combivert representation
         /// </summary>
-        /// <param name="parameterValue">Display representation of the parameter value</param>
+        /// <param name="value">Display representation of the parameter value</param>
         /// <returns></returns>
-        public int ToParameterValue(double parameterValue)
+        public int ToParameterValue(double value)
         {
-            double rawVal = (double)parameterValue;
+            double rawVal = (double)value;
             switch ((Flags & 0xC0) >> 6)    // bit 6..7
             {
                 case 0:

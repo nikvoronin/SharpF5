@@ -2,41 +2,48 @@
 using System.Collections.Generic;
 using SharpF5.Exceptions;
 
-namespace SharpF5
+namespace SharpF5.Common
 {
-    public class ParameterAddress
+    public class Parameter
     {
-        protected string address;
+        public const byte SET_0     = 0;
+        public const byte SET_1     = 1;
+        public const byte SET_2     = 3;
+        public const byte SET_3     = 7;
+        public const byte SET_ALL   = 255;
+
+        protected string name;
         protected byte set;
 
-        public string Address { get{ return address; }}
+        public string Name { get{ return name; }}
         public byte SetNo { get{ return set; }}
+        public int Value = 0;
 
-        protected void Construct(string address, byte set)
+        protected void Construct(string name, byte set)
         {
-            if (address.Length != 4)
+            if (name.Length != 4)
                 throw new IndexOutOfRangeException("Incorrect address length. Must be four characters length.");
 
             if (set > 3)
                 throw new IndexOutOfRangeException("Set must be from 0 to 3");
 
-            this.address = address;
+            this.name = name;
             this.set = set;
         }
 
         /// <summary>
         /// Address of the parameter
         /// </summary>
-        /// <param name="address"></param>
+        /// <param name="name"></param>
         /// <param name="set">0..3</param>
-        public ParameterAddress(string address, byte set)
+        public Parameter(string name, byte set)
         {
-            Construct(address, set);
+            Construct(name, set);
         }
        
-        public ParameterAddress(string address)
+        public Parameter(string name)
         {
-            Construct(address, 0);
+            Construct(name, 0);
         }
          
         /// <summary>
@@ -44,13 +51,13 @@ namespace SharpF5
         /// </summary>
         /// <param name="parameterAddress">String representation of parameter address for ex.: 'sy54', 'ru19'</param>
         /// <returns>Parameter address as byte array of ASCII symbols</returns>
-        public byte[] GetBytes()
+        public byte[] GetAddressBytes()
         {
-            string groupName = address.Substring(0, 2).ToLower();
+            string groupName = name.Substring(0, 2).ToLower();
             string strGroup = GroupNameToHex(groupName);
             char[] chGroup = strGroup.ToCharArray();
 
-            int idx = int.Parse(address.Substring(2, 2));
+            int idx = int.Parse(name.Substring(2, 2));
 
             char[] chAddress = idx.ToString("X2").ToCharArray();
 

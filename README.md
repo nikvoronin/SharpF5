@@ -4,10 +4,10 @@ A .NET Ethernet Communication Library for KEB F5 Combiverts. Library allows read
 
 - Tcp and BootP protocols.
 - Read/write parameters.
-- Parameter sets.
+- Sets of parameters.
 - Display standarts.
 - Operator panels.
-- Searching combiverts (over BootP protocol).
+- Searching combiverts over BootP protocol (in draft state).
 
 
 # Examples
@@ -24,21 +24,33 @@ combivert.SelectInverter(0);
 ## Read/Write parameter
 
 ```c#
-ParameterAddress op10 = new ParameterAddress( "op10", 2));
+int sy50_value = combivert.ReadValue("sy50");
+int op10_value = combivert.ReadValue("op10", Paramater.SET_1);
+combivert.WriteValue(1, "di01");
+```
 
-int value = combivert.GetParameter(op10);
-value *= 2;
-combivert.SetParameter(op10, value);
+Frequent use of the parameter with help of "Parameter" class and use of inner integer field "Value".
+
+```c#
+Parameter op10 = new Parameter( "op10", Parameter.SET_2);
+
+combivert.ReadValue(op10);
+op10.Value *= 2;
+combivert.WriteValue(op10);
+
+Thread.Sleep(1000);
+
+combivert.WriteValue(0, op10);
 ```
 
 
 ## Display standart
 
 ```c#
-ParameterAddress ru25 = new ParameterAddress( "ru25", 0 ));
+Parameter ru25 = new Parameter( "ru25" );
 DisplayStandart std = combivert.GetDisplayStandart(ru25);
 
-int value = combivert.GetParameter( ru25 );
+int value = combivert.ReadValue( ru25 );
 string humanReadableValue = std.ToDisplayValue(value);
 
 Console.WriteLine( humanReadableValue );
@@ -63,10 +75,13 @@ foreach (BootpHelper.BootpResponse f5 in combiverts)
 
 # History
 
+2.5
+- Refactoring.
+
 2.4
 - Only four of the first sets are available at this moment: 0, 1, 2, 3.
 
-2.2-3
+2.2-2.3
 - Refactoring.
 
 2.1
