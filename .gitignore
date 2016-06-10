@@ -1,8 +1,7 @@
 ﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
 
-/bin/Debug
-*.vs
-/src/SharpF5/obj
+[Bb]in/
+.vs
+[Oo]bj/
 *.user
+.suo
