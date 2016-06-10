@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>SharpF5</id>
+        <version>2.5</version>
+        <title>SharpF5</title>
+        <authors>Nikolai Voronin</authors>
+        <licenseUrl>https://github.com/nikvoronin/SharpF5/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/nikvoronin/SharpF5</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Ethernet Communication Library for .NET allows read and write registers of the F5 Combivert with help of the DIN66019-II protocol.
+
+- Tcp and BootP protocols.
+- Read/write parameters.
+- Sets of parameters.
+- Display standarts.
+- Operator panels.
+- Searching combiverts over BootP protocol (in draft state).</description>
+        <summary>A .NET Ethernet Communication Library for KEB F5 Combiverts. Library allows read and write registers of the F5 Combivert with help of the DIN66019-II protocol.</summary>
+        <releaseNotes />
+        <copyright>Copyright © 2008-2015 Nikolai Voronin</copyright>
+        <tags>KEB F5 Combivert DIN66019II Ethernet TCP</tags>
+    </metadata>
+    <files>
+        <file src="..\..\bin\Release\SharpF5.dll" target="lib\SharpF5.dll" />
+    </files>
+</package>
