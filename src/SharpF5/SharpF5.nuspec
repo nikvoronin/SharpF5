@@ -2,13 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>SharpF5</id>
-        <version>2.5</version>
+        <version>2.5.1</version>
         <title>SharpF5</title>
         <authors>Nikolai Voronin</authors>
         <licenseUrl>https://github.com/nikvoronin/SharpF5/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/nikvoronin/SharpF5</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Ethernet Communication Library for .NET allows read and write registers of the F5 Combivert with help of the DIN66019-II protocol.
+        <description>Communication Library for .NET allows read and write registers of the F5 Combivert with help of the DIN66019-II protocol.
 
 - Tcp and BootP protocols.
 - Read/write parameters.
@@ -22,6 +22,6 @@
         <tags>KEB F5 Combivert DIN66019II Ethernet TCP</tags>
     </metadata>
     <files>
-        <file src="..\..\bin\Release\SharpF5.dll" target="lib\SharpF5.dll" />
+        <file src="..\..\bin\Release\SharpF5.dll" target="lib\net40\SharpF5.dll" />
     </files>
 </package>
