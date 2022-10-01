@@ -74,6 +74,8 @@ foreach (BootpHelper.BootpResponse f5 in combiverts)
 
 
 # History
+2.6
+- Retarget for netstandard 2.0
 
 2.5
 - Refactoring.
